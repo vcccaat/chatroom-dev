@@ -1,0 +1,58 @@
+.sidebarChat {
+	display: flex;
+	padding: 20px;
+	cursor: pointer;
+	border-bottom: 1px solid #f6f6f6;
+	max-height: 70px;
+	overflow: hidden;
+	align-items: center;
+}
+.sidebarChat p {
+	color: grey;
+}
+.sidebarChat .MuiSvgIcon-root {
+	margin-right: 10px;
+	color: grey;
+}
+.sidebarChat:hover {
+	background-color: #ebebeb;
+}
+
+.sidebarChat__info > h2 {
+	font-size: 16px;
+	margin-bottom: 8px;
+}
+
+.sidebarChat__info {
+	margin-left: 15px;
+}
+.sidebarChat__messageInfo {
+	display: flex;
+	width: 200px;
+	justify-content: space-between;
+}
+.sidebarChat__timestamp .MuiSvgIcon-root {
+	position: relative;
+	top: -5vh;
+	left: 3vw;
+	color: grey;
+	font-size: small;
+	opacity: 0;
+}
+.sidebarChat__timestamp .MuiSvgIcon-root:hover {
+	opacity: 1;
+}
+.sidebarChat__timestamp {
+	font-size: small;
+	color: lightgrey;
+}
+.sidebarChat__message {
+	font-size: medium;
+	color: grey;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 3;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
