@@ -1,4 +1,8 @@
-export const initialState = { user: null };
+export const initialState = {
+	user: localStorage
+		? JSON.parse(localStorage.getItem('myValueInLocalStorage'))
+		: null,
+};
 
 export const actionTypes = {
 	SET_USER: 'SET_USER',
@@ -6,6 +10,7 @@ export const actionTypes = {
 
 const reducer = (state, action) => {
 	console.log(action);
+	localStorage.setItem('myValueInLocalStorage', JSON.stringify(action.user));
 	switch (action.type) {
 		case actionTypes.SET_USER:
 			return {

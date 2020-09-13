@@ -39,6 +39,27 @@
 	font-size: small;
 	opacity: 0;
 }
+.sidebarChat .modal__Container {
+	display: flex;
+	justify-items: center;
+	align-items: center;
+	z-index: 100;
+}
+.sidebarChat .modal {
+	display: none;
+	position: absolute;
+	background-color: white;
+	width: 25vw;
+	height: 12vh;
+	border: 1px solid grey;
+	box-shadow: -1px 4px 10px -5px black;
+	padding: 30px;
+}
+
+.sidebarChat .modal .MuiButtonBase-root {
+	margin: 30px 10px;
+}
+
 .sidebarChat__timestamp .MuiSvgIcon-root:hover {
 	opacity: 1;
 }

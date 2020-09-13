@@ -46,14 +46,16 @@ export default function Chat() {
 	}, [roomId]);
 
 	const sendMessage = (e) => {
-		e.preventDefault();
-		if (input.trim() !== '') {
-			db.collection('rooms').doc(roomId).collection('message').add({
-				message: input,
-				name: user.displayName,
-				time: firebase.firestore.FieldValue.serverTimestamp(),
-			});
-			setInput('');
+		if (roomId) {
+			e.preventDefault();
+			if (input.trim() !== '') {
+				db.collection('rooms').doc(roomId).collection('message').add({
+					message: input,
+					name: user.displayName,
+					time: firebase.firestore.FieldValue.serverTimestamp(),
+				});
+				setInput('');
+			}
 		}
 	};
 

@@ -3,11 +3,14 @@
 This is a real-time chat application which is very much like slack + wechat + whatsapp, developed in react.
 
 ### New features
-- allow user login, register with email and password
-- allow create new chatting room 
-- random cute avatar based on user's name
-- real-time group chat 
-- responsive layout
+- Keep signin status using localStorage 
+- User can delete chat room
+- Allow user signout
+- Allow user login, register with email and password
+- Allow create new chatting room 
+- Random cute avatar based on user's name
+- Real-time group chat 
+- Responsive layout on web
 
 ### Built with
 
@@ -17,6 +20,8 @@ This is a real-time chat application which is very much like slack + wechat + wh
 
 ### DEMO
 <img src="assets/1.png" width="500">
+
+<img src="assets/4.png" width="500">
 
 <img src="assets/2.png" width="200">
 

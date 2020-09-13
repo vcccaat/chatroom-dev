@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 import { useStateValue } from './StateProvider';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ClearIcon from '@material-ui/icons/Clear';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
 
 function SidebarChat({ addNewChat, id, name }) {
 	const [messages, setMessages] = useState('');
 	const [lastMessageTime, setLastMessageTime] = useState('');
 	const [{ user }, dispatch] = useStateValue();
 	const [roomName, setRoomName] = useState('');
+	const [checkDelete, setCheckDelete] = useState(false);
 
 	const createChat = () => {
 		const roomName = prompt('请输入房间名称');
@@ -49,7 +52,27 @@ function SidebarChat({ addNewChat, id, name }) {
 		setLastMessageTime(displayTime);
 	}, [messages]);
 
-	const deleteRoom = () => {};
+	useEffect(() => {
+		if (checkDelete) {
+			window.location.href = '/';
+			db.collection('rooms')
+				.doc(id)
+				.delete()
+				.then(() => window.location.refresh());
+		}
+	}, [checkDelete]);
+
+	const deleteRoom = () => {
+		document.querySelector('.modal').style.display = 'block';
+	};
+
+	const confirmDelete = () => {
+		setCheckDelete(true);
+	};
+
+	const cancelDelete = () => {
+		document.querySelector('.modal').style.display = 'none';
+	};
 
 	return !addNewChat ? (
 		<Link to={`/rooms/${id}`}>
@@ -61,10 +84,21 @@ function SidebarChat({ addNewChat, id, name }) {
 						<div className='sidebarChat__message'>{messages[0]?.message}</div>
 						<div className='sidebarChat__timestamp'>
 							{lastMessageTime}
-							<div onClick={deleteRoom}>
+							<span onClick={deleteRoom}>
 								<ClearIcon />
-							</div>
+							</span>
 						</div>
+					</div>
+				</div>
+				<div className='modal__Container'>
+					<div className='modal'>
+						<h3>确认要删除群聊吗？</h3>
+						<Button variant='outlined' color='primary' onClick={confirmDelete}>
+							确认
+						</Button>
+						<Button variant='outlined' color='primary' onClick={cancelDelete}>
+							取消
+						</Button>
 					</div>
 				</div>
 			</div>

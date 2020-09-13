@@ -25,6 +25,11 @@ function Sidebar() {
 		};
 	}, []);
 
+	const exitAccount = () => {
+		localStorage.clear();
+		window.location.reload();
+	};
+
 	return (
 		<div className='sidebar'>
 			<div className='sidebar__header'>
@@ -32,7 +37,7 @@ function Sidebar() {
 					src={`https://avatars.dicebear.com/api/bottts/${user.displayName}.svg`}
 				/>
 				<h2>{user.displayName}</h2>
-				<div className='sidebar__headerRight'>
+				<div className='sidebar__headerRight' onClick={exitAccount}>
 					<IconButton>
 						<ExitToAppIcon />
 					</IconButton>
