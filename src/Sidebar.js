@@ -4,12 +4,14 @@ import { Avatar, IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
+import { useParams } from 'react-router-dom';
 import db from './firebase';
 import { useStateValue } from './StateProvider';
 
 function Sidebar() {
 	const [rooms, setRooms] = useState([]);
 	const [{ user }, dispatch] = useStateValue();
+	const { roomId } = useParams();
 
 	useEffect(() => {
 		const unsubscribe = db.collection('rooms').onSnapshot((snapshot) =>
@@ -23,9 +25,10 @@ function Sidebar() {
 		return () => {
 			unsubscribe();
 		};
-	}, []);
+	}, [roomId]);
 
 	const exitAccount = () => {
+		// window.location.href = '/';
 		localStorage.clear();
 		window.location.reload();
 	};

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import Chat from './Chat';
 import Login from './Login';
 import { useStateValue } from './StateProvider';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 				<Login />
 			) : (
 				<div className='app__body'>
-					<HashRouter basename='/'>
+					<Router>
 						<Sidebar />
 						<Switch>
 							<Route path='/rooms/:roomId'>
@@ -27,7 +27,7 @@ function App() {
 								<Chat />
 							</Route>
 						</Switch>
-					</HashRouter>
+					</Router>
 				</div>
 			)}
 		</div>

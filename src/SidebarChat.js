@@ -14,7 +14,6 @@ function SidebarChat({ addNewChat, id, name }) {
 	const [lastMessageTime, setLastMessageTime] = useState('');
 	const [{ user }, dispatch] = useStateValue();
 	const [roomName, setRoomName] = useState('');
-	const [checkDelete, setCheckDelete] = useState(false);
 
 	const createChat = () => {
 		const roomName = prompt('请输入房间名称');
@@ -52,22 +51,16 @@ function SidebarChat({ addNewChat, id, name }) {
 		setLastMessageTime(displayTime);
 	}, [messages]);
 
-	useEffect(() => {
-		if (checkDelete) {
-			window.location.href = '/';
-			db.collection('rooms')
-				.doc(id)
-				.delete()
-				.then(() => window.location.refresh());
-		}
-	}, [checkDelete]);
-
 	const deleteRoom = () => {
 		document.querySelector('.modal').style.display = 'block';
 	};
 
 	const confirmDelete = () => {
-		setCheckDelete(true);
+		window.location.href = '/';
+		db.collection('rooms')
+			.doc(id)
+			.delete()
+			.then(() => window.location.reload());
 	};
 
 	const cancelDelete = () => {
