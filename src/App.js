@@ -19,11 +19,11 @@ function App() {
 					<Router>
 						<Sidebar />
 						<Switch>
-							<Route path='/rooms/:roomId'>
+							<Route path='/chatroom/:roomId'>
 								<Chat />
 							</Route>
 
-							<Route path='/'>
+							<Route path='/chatroom'>
 								<Chat />
 							</Route>
 						</Switch>

@@ -56,7 +56,7 @@ function SidebarChat({ addNewChat, id, name }) {
 	};
 
 	const confirmDelete = () => {
-		window.location.href = '/';
+		window.location.href = '/chatroom';
 		db.collection('rooms')
 			.doc(id)
 			.delete()
@@ -68,7 +68,7 @@ function SidebarChat({ addNewChat, id, name }) {
 	};
 
 	return !addNewChat ? (
-		<Link to={`/rooms/${id}`}>
+		<Link to={`/chatroom/${id}`}>
 			<div className='sidebarChat'>
 				<Avatar src={`https://avatars.dicebear.com/api/identicon/${id}.svg`} />
 				<div className='sidebarChat__info'>
