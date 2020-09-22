@@ -43,12 +43,22 @@
 
 .chat__name {
 	position: absolute;
-	top: -18px;
+	top: -20px;
 	color: grey;
 	font-weight: 600;
+	color: black;
 	width: 100px;
 	font-size: small;
 	left: -5px;
+}
+.chat__time {
+	position: absolute;
+	color: grey;
+	font-weight: 400;
+	font-size: x-small;
+	left: 100%;
+	top: 60%;
+	margin-left: 10px;
 }
 .chat__info {
 	display: flex;
@@ -66,10 +76,8 @@
 }
 
 .chat__timestamp {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 20px;
-	font-size: x-small;
+	margin-top: 10px;
+	font-size: small;
 	color: grey;
 }
 
