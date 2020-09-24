@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Avatar } from '@material-ui/core';
 import './SidebarChat.css';
 import db from './firebase';
 import { Link } from 'react-router-dom';
-import { useStateValue } from './StateProvider';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ClearIcon from '@material-ui/icons/Clear';
-import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
+import Modal from './Modal';
 
 function SidebarChat({ addNewChat, id, name }) {
 	const [messages, setMessages] = useState('');
 	const [lastMessageTime, setLastMessageTime] = useState('');
-	const [{ user }, dispatch] = useStateValue();
-	const [roomName, setRoomName] = useState('');
+	const modalRef = useRef('');
 
 	const createChat = () => {
 		const roomName = prompt('请输入房间名称');
@@ -21,7 +19,6 @@ function SidebarChat({ addNewChat, id, name }) {
 			db.collection('rooms').add({
 				name: roomName,
 			});
-			setRoomName(roomName);
 		}
 	};
 
@@ -38,33 +35,37 @@ function SidebarChat({ addNewChat, id, name }) {
 	}, [id]);
 
 	useEffect(() => {
-		const today = new Date(messages[0]?.time?.toDate());
+		const lastMesgTime = new Date(messages[0]?.time?.toDate());
 		const displayTime =
-			today == 'Invalid Date'
+			// eslint-disable-next-line
+			lastMesgTime == 'Invalid Date'
 				? ''
-				: (today.getHours() < 10 ? '0' : '') +
-				  today.getHours() +
+				: (lastMesgTime.getHours() < 10 ? '0' : '') +
+				  lastMesgTime.getHours() +
 				  ':' +
-				  (today.getMinutes() < 10 ? '0' : '') +
-				  today.getMinutes();
+				  (lastMesgTime.getMinutes() < 10 ? '0' : '') +
+				  lastMesgTime.getMinutes();
 
 		setLastMessageTime(displayTime);
 	}, [messages]);
 
 	const deleteRoom = () => {
-		document.querySelector('.modal').style.display = 'block';
+		modalRef.current.style.display = 'block';
 	};
 
 	const confirmDelete = () => {
-		window.location.href = '/chatroom';
+		// window.location.href = '/chatroom';
 		db.collection('rooms')
-			.doc(id)
+			.doc(name)
 			.delete()
-			.then(() => window.location.reload());
+			.then(() => {
+				window.location.href = '/chatroom';
+			});
+		closeRoom();
 	};
 
-	const cancelDelete = () => {
-		document.querySelector('.modal').style.display = 'none';
+	const closeRoom = () => {
+		modalRef.current.style.display = 'none';
 	};
 
 	return !addNewChat ? (
@@ -75,23 +76,23 @@ function SidebarChat({ addNewChat, id, name }) {
 					<h2>{name}</h2>
 					<div className='sidebarChat__messageInfo'>
 						<div className='sidebarChat__message'>{messages[0]?.message}</div>
-						<div className='sidebarChat__timestamp'>
-							{lastMessageTime}
-							<span onClick={deleteRoom}>
-								<ClearIcon />
-							</span>
+						<div className='sidebarChat__timestamp'>{lastMessageTime}</div>
+						<div className='sidebarChat__delete' onClick={deleteRoom}>
+							<ClearIcon />
+							<Modal ref={modalRef}>
+								<p>确认要删除 “{name}" 群聊吗？</p>
+								<Button
+									variant='outlined'
+									color='primary'
+									onClick={confirmDelete}
+								>
+									确认
+								</Button>
+								<Button variant='outlined' color='primary' onClick={closeRoom}>
+									取消
+								</Button>
+							</Modal>
 						</div>
-					</div>
-				</div>
-				<div className='modal__Container'>
-					<div className='modal'>
-						<h3>确认要删除群聊吗？</h3>
-						<Button variant='outlined' color='primary' onClick={confirmDelete}>
-							确认
-						</Button>
-						<Button variant='outlined' color='primary' onClick={cancelDelete}>
-							取消
-						</Button>
 					</div>
 				</div>
 			</div>

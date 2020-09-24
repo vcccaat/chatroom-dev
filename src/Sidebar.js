@@ -10,7 +10,7 @@ import { useStateValue } from './StateProvider';
 
 function Sidebar() {
 	const [rooms, setRooms] = useState([]);
-	const [{ user }, dispatch] = useStateValue();
+	const [{ user }] = useStateValue();
 	const { roomId } = useParams();
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ function Sidebar() {
 		return () => {
 			unsubscribe();
 		};
-	}, [roomId]);
+	}, []); //roomID??
 
 	const exitAccount = () => {
 		// window.location.href = '/';
@@ -46,6 +46,7 @@ function Sidebar() {
 					</IconButton>
 				</div>
 			</div>
+
 			{/* <div className='sidebar__search'>
 				<div className='sidebar__searchContainer'>
 					<SearchOutlined />

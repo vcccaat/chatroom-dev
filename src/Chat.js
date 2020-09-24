@@ -14,19 +14,28 @@ export default function Chat() {
 	const { roomId } = useParams();
 	const [roomName, setRoomName] = useState('');
 	const [messages, setMessages] = useState([]);
-	const [currentTime, setcurrentTime] = useState('');
-	const [{ user }, dispatch] = useStateValue();
+	const [lastTime, setLastTime] = useState('');
+	const [{ user }] = useStateValue();
 
 	useEffect(() => {
-		const today = new Date();
-		const time =
-			(today.getHours() < 10 ? '0' : '') +
-			today.getHours() +
-			':' +
-			(today.getMinutes() < 10 ? '0' : '') +
-			today.getMinutes();
-		setcurrentTime(time);
-	});
+		const lastMesgTime = new Date(
+			messages[messages.length - 1]?.time?.toDate()
+		);
+		const displayTime =
+			// eslint-disable-next-line
+			lastMesgTime == 'Invalid Date'
+				? ''
+				: lastMesgTime.getMonth() +
+				  '月' +
+				  lastMesgTime.getDate() +
+				  '日     ' +
+				  (lastMesgTime.getHours() < 10 ? '0' : '') +
+				  lastMesgTime.getHours() +
+				  ':' +
+				  (lastMesgTime.getMinutes() < 10 ? '0' : '') +
+				  lastMesgTime.getMinutes();
+		setLastTime(displayTime);
+	}, [messages]);
 
 	useEffect(() => {
 		if (roomId) {
@@ -59,6 +68,17 @@ export default function Chat() {
 		}
 	};
 
+	const messageSendTime = (t) => {
+		const time = new Date(t.toDate());
+		const displayTime =
+			(time.getHours() < 10 ? '0' : '') +
+			time.getHours() +
+			':' +
+			(time.getMinutes() < 10 ? '0' : '') +
+			time.getMinutes();
+		return displayTime;
+	};
+
 	return (
 		<div className='chat'>
 			<div className='chat__header'>
@@ -67,6 +87,9 @@ export default function Chat() {
 				/>
 				<div className='chat__headerInfo'>
 					<h3>{roomName}</h3>
+					<div className='chat__timestamp'>
+						<p>最近一次聊天 {lastTime}</p>
+					</div>
 				</div>
 				<div className='chat__headerRight'>
 					<IconButton>
@@ -88,20 +111,20 @@ export default function Chat() {
 							}`}
 						>
 							<Avatar
-								src={`https://avatars.dicebear.com/api/bottts/${
-									message.name === user.displayName ? user.displayName : roomId
-								}.svg`}
+								src={`https://avatars.dicebear.com/api/bottts/${message.name}.svg`}
 							/>
 						</div>
 						<p className='chat__message'>
-							<span className='chat__name'>{message.name}</span>
+							<p className='chat__name'>{message.name}</p>
+							<p className='chat__time'>
+								{message.name === user.displayName
+									? ''
+									: messageSendTime(message.time)}
+							</p>
 							{message.message}
 						</p>
 					</div>
 				))}
-				<div className='chat__timestamp'>
-					<p>{currentTime}</p>
-				</div>
 			</div>
 			<div className='chat__footer'>
 				<div className='chat__footerWrap'>
