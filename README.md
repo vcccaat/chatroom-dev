@@ -1,9 +1,11 @@
 ### Intro
 
-This is a real-time chat application which is very much like slack + wechat + whatsapp, developed in react.
+This is a real-time chat application developed in react.
 
 ### New features
-- Keep signin status using localStorage 
+- Add dark theme
+- Custom modal hooks component
+- Keep signin status  
 - User can delete chat room
 - Allow user signout
 - Allow user login, register with email and password
@@ -23,10 +25,11 @@ This is a real-time chat application which is very much like slack + wechat + wh
 
 <img src="assets/4.png" width="500">
 
+<img src="assets/5.png" width="500">
+
 <img src="assets/2.png" width="200">
 
 <img src="assets/3.png" width="200">
-
 
 
 

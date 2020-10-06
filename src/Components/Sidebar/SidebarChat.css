@@ -2,58 +2,37 @@
 	display: flex;
 	padding: 20px 0px 20px 20px;
 	cursor: pointer;
-	border-bottom: 1px solid #f6f6f6;
+	border-bottom: 1px solid lightgrey;
 	max-height: 70px;
 	overflow: hidden;
 	align-items: center;
 }
-.sidebarChat p {
+.sidebarChat > p {
 	color: grey;
 }
 .sidebarChat .MuiSvgIcon-root {
 	margin-right: 10px;
 	color: grey;
 }
-.sidebarChat:hover {
-	background-color: #ebebeb;
+
+.sidebarChat__room {
+	margin-left: 15px;
+	flex: 1;
 }
 
-.sidebarChat__info > h2 {
+.sidebarChat__roomName {
 	font-size: 16px;
 	margin-bottom: 8px;
+	margin-right: 25px;
+	-webkit-line-clamp: 1;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
-.sidebarChat__info {
-	margin-left: 15px;
-}
 .sidebarChat__messageInfo {
 	display: flex;
-	width: 200px;
-}
-
-.modal__Container {
-	display: flex;
-	justify-items: center;
-	align-items: center;
-	z-index: 100;
-}
-.sidebarChat .modal {
-	display: none;
-	position: absolute;
-	background-color: white;
-	width: 25vw;
-	height: 12vh;
-	border: 1px solid grey;
-	box-shadow: -1px 4px 10px -5px black;
-	padding: 30px;
-}
-
-.sidebarChat .modal p {
-	color: black;
-}
-
-.sidebarChat .modal .MuiButtonBase-root {
-	margin: 30px 10px;
 }
 
 .sidebarChat__delete .MuiSvgIcon-root {
@@ -71,16 +50,21 @@
 .sidebarChat__timestamp {
 	font-size: small;
 	color: lightgrey;
+	margin-top: 10px;
 }
-.sidebarChat__message {
+.sidebarChat__lastMessage {
 	flex: 1;
+	margin-top: 10px;
 	min-width: 140px;
 	font-size: medium;
 	color: grey;
 	text-overflow: ellipsis;
-	-webkit-line-clamp: 3;
-	text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
+}
+
+.sidebarChat:hover {
+	background-color: rgba(255, 255, 255, 0.103);
 }

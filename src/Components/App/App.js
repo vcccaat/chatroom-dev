@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
-import Sidebar from './Sidebar';
-import Chat from './Chat';
-import Login from './Login';
-import { useStateValue } from './StateProvider';
+import Sidebar from '../Sidebar/Sidebar';
+import Chat from '../ChatPage/Chat';
+import Login from '../LoginPage/Login';
+import { useStateValue } from '../../Utilities/Redux/StateProvider';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { Switch as Toggle } from '@material-ui/core';
-import { Grid, Paper } from '@material-ui/core';
+import { Switch as Toggle, Grid, Paper } from '@material-ui/core';
 
 function App() {
 	const [{ user }] = useStateValue();
@@ -17,7 +16,7 @@ function App() {
 		palette: {
 			type: darkmode ? 'dark' : 'light',
 			background: {
-				paper: darkmode ? '#424242' : '#ededed',
+				paper: darkmode ? '#303030' : '#ededed',
 			},
 		},
 	});
@@ -28,7 +27,7 @@ function App() {
 				<span className='toggle'>
 					Dark Mode
 					<Toggle
-						color='Primary'
+						color='primary'
 						checked={darkmode}
 						onChange={() => setDarkMode(!darkmode)}
 					/>

@@ -5,7 +5,7 @@
 }
 a {
 	text-decoration: none !important;
-	color: black;
+	color: inherit;
 }
 .sidebar__search {
 	display: flex;

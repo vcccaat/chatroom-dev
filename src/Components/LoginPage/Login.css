@@ -47,9 +47,3 @@
 .login__container span:hover {
 	opacity: 1;
 }
-.hideSignup {
-	display: none;
-}
-.hideLogin {
-	display: block;
-}

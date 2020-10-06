@@ -4,31 +4,33 @@ import { Avatar, IconButton } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import SearchOutlined from '@material-ui/icons/SearchOutlined';
 import SidebarChat from './SidebarChat';
-import { useParams } from 'react-router-dom';
-import db from './firebase';
-import { useStateValue } from './StateProvider';
+import { db } from '../../Utilities/Firebase/firebase';
+import { useStateValue } from '../../Utilities/Redux/StateProvider';
 
 function Sidebar() {
 	const [rooms, setRooms] = useState([]);
 	const [{ user }] = useStateValue();
-	const { roomId } = useParams();
 
 	useEffect(() => {
-		const unsubscribe = db.collection('rooms').onSnapshot((snapshot) =>
-			setRooms(
-				snapshot.docs.map((doc) => ({
-					id: doc.id,
-					data: doc.data(),
-				}))
-			)
+		const unsubscribe = db.collection('rooms').onSnapshot(
+			(snapshot) =>
+				setRooms(
+					snapshot.docs.map((doc) => ({
+						id: doc.id,
+						data: doc.data(),
+					}))
+				),
+			(error) => {
+				console.error('Error loading chatting rooms ', error);
+			}
 		);
+
 		return () => {
 			unsubscribe();
 		};
-	}, []); //roomID??
+	}, []);
 
 	const exitAccount = () => {
-		// window.location.href = '/';
 		localStorage.clear();
 		window.location.reload();
 	};
@@ -55,6 +57,7 @@ function Sidebar() {
 			</div> */}
 			<div className='sidebar__chats'>
 				<SidebarChat addNewChat />
+
 				{rooms.map((room) => (
 					<SidebarChat key={room.id} id={room.id} name={room.data.name} />
 				))}

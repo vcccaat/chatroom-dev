@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, IconButton, Input } from '@material-ui/core';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import MicIcon from '@material-ui/icons/Mic';
 import { useParams } from 'react-router-dom';
 import './Chat.css';
-import db from './firebase';
-import firebase from 'firebase';
-import { useStateValue } from './StateProvider';
+import { db, timestamp } from '../../Utilities/Firebase/firebase';
+import { useStateValue } from '../../Utilities/Redux/StateProvider';
 
 export default function Chat() {
 	const [input, setInput] = useState('');
@@ -41,15 +40,30 @@ export default function Chat() {
 		if (roomId) {
 			db.collection('rooms')
 				.doc(roomId)
-				.onSnapshot((snapshot) => {
-					setRoomName(snapshot.data().name);
-				});
+				.onSnapshot(
+					(snapshot) => {
+						if (snapshot.data()) {
+							setRoomName(snapshot.data().name);
+						}
+					},
+					(error) => {
+						console.error('Error loading the room name ', error);
+					}
+				);
+
 			db.collection('rooms')
 				.doc(roomId)
 				.collection('message')
 				.orderBy('time', 'asc')
-				.onSnapshot((snapshot) =>
-					setMessages(snapshot.docs.map((doc) => doc.data()))
+				.onSnapshot(
+					(snapshot) => setMessages(snapshot.docs.map((doc) => doc.data())),
+					(error) => {
+						console.error(
+							'Error loading the messages of the room: ',
+							roomId,
+							error
+						);
+					}
 				);
 		}
 	}, [roomId]);
@@ -58,11 +72,17 @@ export default function Chat() {
 		if (roomId) {
 			e.preventDefault();
 			if (input.trim() !== '') {
-				db.collection('rooms').doc(roomId).collection('message').add({
-					message: input,
-					name: user.displayName,
-					time: firebase.firestore.FieldValue.serverTimestamp(),
-				});
+				db.collection('rooms')
+					.doc(roomId)
+					.collection('message')
+					.add({
+						message: input,
+						name: user.displayName,
+						time: timestamp,
+					})
+					.catch((error) => {
+						console.error('Error sending message: ', input, error);
+					});
 				setInput('');
 			}
 		}
@@ -86,7 +106,7 @@ export default function Chat() {
 					src={`https://avatars.dicebear.com/api/identicon/${roomId}.svg`}
 				/>
 				<div className='chat__headerInfo'>
-					<h3>{roomName}</h3>
+					<div className='chat__headerRoomName'>{roomName}</div>
 					<div className='chat__timestamp'>
 						<p>最近一次聊天 {lastTime}</p>
 					</div>
@@ -114,15 +134,15 @@ export default function Chat() {
 								src={`https://avatars.dicebear.com/api/bottts/${message.name}.svg`}
 							/>
 						</div>
-						<p className='chat__message'>
+						<div className='chat__message'>
 							<p className='chat__name'>{message.name}</p>
 							<p className='chat__time'>
 								{message.name === user.displayName
 									? ''
 									: messageSendTime(message.time)}
 							</p>
-							{message.message}
-						</p>
+							<p className='chat__content'>{message.message}</p>
+						</div>
 					</div>
 				))}
 			</div>
@@ -130,7 +150,9 @@ export default function Chat() {
 				<div className='chat__footerWrap'>
 					<InsertEmoticonIcon />
 					<form>
-						<input
+						<Input
+							className='chat__footerInput'
+							disableUnderline={true}
 							value={input}
 							onChange={(e) => {
 								setInput(e.target.value);
