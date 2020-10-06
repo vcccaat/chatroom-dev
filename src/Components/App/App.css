@@ -1,16 +1,19 @@
 .app {
 	display: grid;
 	place-items: center;
-	background-color: #dadbd3;
 	height: 100vh;
 	min-width: 500px;
 }
 
 .app__body {
 	display: flex;
-	background-color: #ededed;
 	height: 90vh;
 	width: 90vw;
-
 	box-shadow: -1px 4px 20px -6px black;
+}
+
+.app .toggle {
+	position: absolute;
+	top: 0;
+	right: 0;
 }

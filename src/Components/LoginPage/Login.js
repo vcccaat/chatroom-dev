@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { auth, provider } from './firebase';
-import { actionTypes } from './reducer';
-import { useStateValue } from './StateProvider';
-import firebase from 'firebase';
+import { actionTypes } from '../../Utilities/Redux/reducer';
+import { useStateValue } from '../../Utilities/Redux/StateProvider';
+import { auth } from '../../Utilities/Firebase/firebase';
+import { Grid, Typography, Button, Paper } from '@material-ui/core';
 
 function Login() {
+	// eslint-disable-next-line
 	const [{}, dispatch] = useStateValue();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [name, setName] = useState('');
+	const [loginVisible, setLoginVisible] = useState(true);
 
 	const signIn = () => {
-		firebase
-			.auth()
+		auth
 			.signInWithEmailAndPassword(email, password)
 			.then((result) => {
 				dispatch({
@@ -25,18 +26,15 @@ function Login() {
 	};
 
 	const switchSignup = () => {
-		document.querySelector('.hideLogin').style.display = 'none';
-		document.querySelector('.hideSignup').style.display = 'block';
+		setLoginVisible(false);
 	};
 
 	const switchLogin = () => {
-		document.querySelector('.hideLogin').style.display = 'block';
-		document.querySelector('.hideSignup').style.display = 'none';
+		setLoginVisible(true);
 	};
 
 	const signup = () => {
-		firebase
-			.auth()
+		auth
 			.createUserWithEmailAndPassword(email, password)
 			.then((result) => {
 				return result.user.updateProfile({
@@ -49,11 +47,11 @@ function Login() {
 		switchLogin();
 	};
 
-	return (
+	return loginVisible ? (
 		<div className='login'>
-			<div className='hideLogin'>
-				<div className='login__container'>
-					<h2>一起来聊天吧</h2>
+			<Paper className='login__container'>
+				<Grid container direction='column'>
+					<Typography variant='h4'>一起来聊天吧</Typography>
 					<input
 						onChange={(e) => setEmail(e.target.value)}
 						id='email'
@@ -66,13 +64,20 @@ function Login() {
 						type='password'
 						placeholder='密码'
 					/>
-					<button onClick={signIn}>登录账号</button>
-					<span onClick={switchSignup}> 注册账号 </span>
-				</div>
-			</div>
-			<div className='hideSignup'>
-				<div className='login__container'>
-					<h2>注册用户</h2>
+					<Button className='signin__button' onClick={signIn}>
+						登录账号
+					</Button>
+					<Button className='register__button' onClick={switchSignup}>
+						注册账号
+					</Button>
+				</Grid>
+			</Paper>
+		</div>
+	) : (
+		<div className='login'>
+			<Paper className='login__container'>
+				<Grid container direction='column'>
+					<Typography variant='h4'>注册用户</Typography>
 					<input
 						onChange={(e) => setName(e.target.value)}
 						id='name'
@@ -81,20 +86,24 @@ function Login() {
 					/>
 					<input
 						onChange={(e) => setEmail(e.target.value)}
-						id='email'
+						id='email2'
 						type='email'
 						placeholder='邮箱'
 					/>
 					<input
 						onChange={(e) => setPassword(e.target.value)}
-						id='password'
+						id='password2'
 						type='password'
 						placeholder='密码'
 					/>
-					<button onClick={signup}>注册</button>
-					<button onClick={switchLogin}>返回登录页面</button>
-				</div>
-			</div>
+					<Button className='signin__button' onClick={signup}>
+						注册
+					</Button>
+					<Button className='register__button' onClick={switchLogin}>
+						返回登录页面
+					</Button>
+				</Grid>
+			</Paper>
 		</div>
 	);
 }

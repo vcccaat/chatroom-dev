@@ -17,9 +17,14 @@
 	padding-left: 20px;
 }
 
-.chat__headerInfo > h3 {
+.chat__headerRoomName {
 	margin-bottom: 3px;
 	font-weight: 500;
+	-webkit-line-clamp: 1;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .chat__headerInfo > p {
@@ -44,9 +49,7 @@
 .chat__name {
 	position: absolute;
 	top: -20px;
-	color: grey;
 	font-weight: 600;
-	color: black;
 	width: 100px;
 	font-size: small;
 	left: -5px;
@@ -73,6 +76,10 @@
 	width: fit-content;
 	margin-bottom: 30px;
 	border-radius: 10px;
+	margin-right: 15px;
+}
+.chat__content {
+	color: black;
 }
 
 .chat__timestamp {
@@ -109,7 +116,7 @@
 	top: -8px;
 	position: relative;
 }
-.chat__footerWrap > form > input {
+.chat__footerInput {
 	flex: 1;
 	display: flex;
 	border: none;
@@ -119,7 +126,7 @@
 	font-size: medium;
 	white-space: pre-wrap;
 	word-wrap: break-word;
-	background-color: #ededed;
+	background: transparent;
 }
 .chat__footerWrap > form > button {
 	display: none;
