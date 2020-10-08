@@ -134,3 +134,8 @@
 .chat__footer > .MuiSvgIcon-root {
 	color: gray;
 }
+.spinner {
+	position: absolute;
+	top: 12px;
+	left: -30px;
+}

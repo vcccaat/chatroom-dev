@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import './Chat.css';
 import { db, timestamp } from '../../Utilities/Firebase/firebase';
 import { useStateValue } from '../../Utilities/Redux/StateProvider';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 export default function Chat() {
 	const [input, setInput] = useState('');
@@ -15,6 +17,7 @@ export default function Chat() {
 	const [messages, setMessages] = useState([]);
 	const [lastTime, setLastTime] = useState('');
 	const [{ user }] = useStateValue();
+	const [loading, setLoading] = useState('');
 
 	useEffect(() => {
 		const lastMesgTime = new Date(
@@ -56,19 +59,24 @@ export default function Chat() {
 				.collection('message')
 				.orderBy('time', 'asc')
 				.onSnapshot(
-					(snapshot) => setMessages(snapshot.docs.map((doc) => doc.data())),
+					(snapshot) => {
+						setMessages(snapshot.docs.map((doc) => doc.data()));
+						setLoading('success');
+					},
 					(error) => {
 						console.error(
 							'Error loading the messages of the room: ',
 							roomId,
 							error
 						);
+						setLoading('failed');
 					}
 				);
 		}
 	}, [roomId]);
 
 	const sendMessage = (e) => {
+		setLoading('loading');
 		if (roomId) {
 			e.preventDefault();
 			if (input.trim() !== '') {
@@ -80,9 +88,12 @@ export default function Chat() {
 						name: user.displayName,
 						time: timestamp,
 					})
+
 					.catch((error) => {
 						console.error('Error sending message: ', input, error);
+						setLoading('failed');
 					});
+
 				setInput('');
 			}
 		}
@@ -97,6 +108,23 @@ export default function Chat() {
 			(time.getMinutes() < 10 ? '0' : '') +
 			time.getMinutes();
 		return displayTime;
+	};
+
+	const checkMessageState = (messageState) => {
+		switch (messageState) {
+			case 'loading':
+				return (
+					<div className='spinner'>
+						<CircularProgress size={20} />
+					</div>
+				);
+			case 'failed':
+				return (
+					<div className='spinner'>
+						<PriorityHighIcon size={20} style={{ color: 'red' }} />
+					</div>
+				);
+		}
 	};
 
 	return (
@@ -142,6 +170,9 @@ export default function Chat() {
 									: messageSendTime(message.time)}
 							</p>
 							<p className='chat__content'>{message.message}</p>
+							{/* {message === messages[messages.length - 1]
+								? checkMessageState(loading)
+								: ''} */}
 						</div>
 					</div>
 				))}
