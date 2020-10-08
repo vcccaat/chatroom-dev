@@ -3,8 +3,9 @@
 This is a real-time chat application developed in react.
 
 ### New features
+- Add loading component for full page
 - Add dark theme
-- Custom modal hooks component
+- Custom modal component to display small window information
 - Keep signin status  
 - User can delete chat room
 - Allow user signout
