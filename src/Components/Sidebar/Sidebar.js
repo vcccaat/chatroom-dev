@@ -6,22 +6,27 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SidebarChat from './SidebarChat';
 import { db } from '../../Utilities/Firebase/firebase';
 import { useStateValue } from '../../Utilities/Redux/StateProvider';
+import Loading from '../../Utilities/Loading/Loading';
 
 function Sidebar() {
 	const [rooms, setRooms] = useState([]);
 	const [{ user }] = useStateValue();
+	const [loading, setLoading] = useState('loading');
 
 	useEffect(() => {
 		const unsubscribe = db.collection('rooms').onSnapshot(
-			(snapshot) =>
+			(snapshot) => {
 				setRooms(
 					snapshot.docs.map((doc) => ({
 						id: doc.id,
 						data: doc.data(),
 					}))
-				),
+				);
+				setLoading('success');
+			},
 			(error) => {
 				console.error('Error loading chatting rooms ', error);
+				setLoading('failed');
 			}
 		);
 
@@ -57,10 +62,13 @@ function Sidebar() {
 			</div> */}
 			<div className='sidebar__chats'>
 				<SidebarChat addNewChat />
-
 				{rooms.map((room) => (
 					<SidebarChat key={room.id} id={room.id} name={room.data.name} />
 				))}
+				<Loading
+					visible={loading}
+					content={loading === 'loading' ? '加载中...' : '请检查网络'}
+				/>
 			</div>
 		</div>
 	);

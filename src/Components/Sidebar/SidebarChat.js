@@ -61,6 +61,8 @@ function SidebarChat({ addNewChat, id, name }) {
 			.delete()
 			.then(() => {
 				console.log('Document successfully deleted!');
+				alert('成功删除！');
+				window.location.reload(false);
 			})
 			.catch((error) => {
 				console.error('Error removing document: ', error);
